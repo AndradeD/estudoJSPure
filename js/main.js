@@ -41,7 +41,8 @@ function setList(list){
                             '<td>'+formatDesc(list[key].desc)+'</td>' +
                             '<td>'+list[key].amount+'</td>' +
                             '<td>'+formatValue(list[key].value)+'</td>' +
-                            '<td>Edit | Delete</td>' +
+                            '<td><button class="btn btn-default" onclick="setUpdate('+key+')">Edit</button>'+
+                            ' <button class="btn btn-default" onclick="deleteElement('+key+')">Delete</button></td>' +
                         '</tr>'
     }
     table += '</tbody>';
@@ -84,6 +85,44 @@ function clearData(){
     document.getElementById('desc').value = "";
     document.getElementById('amount').value = "";
     document.getElementById('value').value = "";
+
+    document.getElementById('btnUpdate').style.display = 'none';
+    document.getElementById('btnAdd').style.display = 'inline-block';
+}
+
+function setUpdate(id){
+    var object = list[id];
+    document.getElementById('desc').value = object.desc;
+    document.getElementById('amount').value = object.amount;
+    document.getElementById('value').value = object.value;
+
+    document.getElementById('btnUpdate').style.display = 'inline-block';
+    document.getElementById('btnAdd').style.display = 'none';
+    document.getElementById('idElement').value = id;
+}
+
+function updateData() {
+    var idObject = document.getElementById('idElement').value;
+
+    list[idObject].desc = document.getElementById('desc').value;
+    list[idObject].amount= document.getElementById('amount').value;
+    list[idObject].value = document.getElementById('value').value;
+
+    clearData();
+    setList(list);
+}
+
+function deleteElement(id){
+    if (confirm('Delete this item?')){
+        if (id == list.length -1){
+            list.pop();
+        }else if (id === 0) {
+            list.shift();
+        }else{
+             list.splice(id,1);
+        }
+        setList(list);
+    }
 }
 
 setList(list);

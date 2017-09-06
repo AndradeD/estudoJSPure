@@ -26,7 +26,12 @@
         <div class="form-group">
             <input type="text" class="form-control" id="value" placeholder="Value" />
         </div>
-        <button onclick='addData()' class="btn btn-success">Add</button>
+        <span id="btnUpdate" style="display: none;">
+            <input hidden id="idElement">
+            <button onclick='updateData()' class="btn btn-success">Save</button>
+            <button onclick='clearData()' class="btn btn-warning">Cancel</button>
+        </span>
+        <button id='btnAdd' onclick='addData()' class="btn btn-default">Add</button>
     </div>
     <table id='listTable' class="table">
     </table>
