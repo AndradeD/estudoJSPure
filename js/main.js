@@ -62,4 +62,28 @@ function formatValue(value){
     return str;
 }
 
+function addData(){
+    var desc = document.getElementById('desc').value;
+    var amount = document.getElementById('amount').value;
+    var value = document.getElementById('value').value;
+
+    if (desc != "" && amount != "" && value != ""){
+        list.unshift({
+            desc: desc,
+            amount: amount,
+            value: value
+        });
+        setList(list);
+        clearData();
+    }else{
+        alert("Preencha tudo");
+    }
+}
+
+function clearData(){
+    document.getElementById('desc').value = "";
+    document.getElementById('amount').value = "";
+    document.getElementById('value').value = "";
+}
+
 setList(list);
