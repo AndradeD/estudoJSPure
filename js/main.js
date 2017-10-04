@@ -39,7 +39,7 @@ function setList(list){
     for (var key in list){
         table +=        '<tr>' +
                             '<td>'+formatDesc(list[key].desc)+'</td>' +
-                            '<td>'+list[key].amount+'</td>' +
+                            '<td>'+formatAmount(list[key].amount)+'</td>' +
                             '<td>'+formatValue(list[key].value)+'</td>' +
                             '<td><button class="btn btn-default" onclick="setUpdate('+key+')">Edit</button>'+
                             ' <button class="btn btn-default" onclick="deleteElement('+key+')">Delete</button></td>' +
@@ -63,12 +63,20 @@ function formatValue(value){
     return str;
 }
 
+function formatAmount(amount){
+   return parseInt(amount);
+}
+
 function addData(){
+    if (!validation()){
+        return;
+    }
+
     var desc = document.getElementById('desc').value;
     var amount = document.getElementById('amount').value;
     var value = document.getElementById('value').value;
 
-    if (desc != "" && amount != "" && value != ""){
+    //if (desc != "" && amount != "" && value != ""){
         list.unshift({
             desc: desc,
             amount: amount,
@@ -76,9 +84,9 @@ function addData(){
         });
         setList(list);
         clearData();
-    }else{
-        alert("Preencha tudo");
-    }
+    //}else{
+     //   alert("Preencha tudo");
+    //}
 }
 
 function clearData(){
@@ -88,6 +96,8 @@ function clearData(){
 
     document.getElementById('btnUpdate').style.display = 'none';
     document.getElementById('btnAdd').style.display = 'inline-block';
+
+    document.getElementById("errors").style.display = "none";
 }
 
 function setUpdate(id){
@@ -102,6 +112,10 @@ function setUpdate(id){
 }
 
 function updateData() {
+    if (!validation()){
+        return;
+    }
+
     var idObject = document.getElementById('idElement').value;
 
     list[idObject].desc = document.getElementById('desc').value;
@@ -112,16 +126,55 @@ function updateData() {
     setList(list);
 }
 
-function deleteElement(id){
-    if (confirm('Delete this item?')){
-        if (id == list.length -1){
+function deleteElement(id) {
+    if (confirm('Delete this item?')) {
+        if (id == list.length - 1) {
             list.pop();
-        }else if (id === 0) {
+        } else if (id === 0) {
             list.shift();
-        }else{
-             list.splice(id,1);
+        } else {
+            list.splice(id, 1);
         }
         setList(list);
+    }
+}
+
+function validation(){
+    var desc = document.getElementById("desc").value;
+    var amount = document.getElementById("amount").value;
+    var value = document.getElementById("value").value;
+    var errors = "";
+
+    document.getElementById("errors").style.display = "none";
+
+    if (desc == ""){
+        errors += "<p> Fill out Description</p>";
+    }
+
+    if (amount == ""){
+        errors += "<p> Fill out a quantity</p>";
+    }else if (amount != parseInt(amount)){
+        errors += "<p> Fill out a valid quantity</p>";
+    }
+
+    if (value == ""){
+        errors += "<p> Fill out a value</p>";
+    }else if (value != parseFloat(value)){
+        errors += "<p> Fill out a valid value</p>";
+    }
+
+    if (errors != ""){
+        document.getElementById("errors").style.display = "block";
+        document.getElementById("errors").style.backgroundColor = "rgba(85,85,85,0.3)";
+        document.getElementById("errors").style.color = "white";
+        document.getElementById("errors").style.padding = "10px";
+        document.getElementById("errors").style.margin = "10px";
+        document.getElementById("errors").style.borderRadius = "13px";
+
+        document.getElementById("errors").innerHTML = "<h3>Error : </h3>"+ errors;
+        return 0;
+    }else{
+        return 1;
     }
 }
 
