@@ -49,6 +49,7 @@ function setList(list){
 
     document.getElementById('listTable').innerHTML = table;
     getTotal(list);
+    saveListStorage(list);
 }
 
 function formatDesc(desc){
@@ -179,4 +180,25 @@ function validation(){
     }
 }
 
-setList(list);
+function deleteList(){
+    if (confirm("Deseja deletar a lista?")){
+        list = [];
+        setList(list);
+    }
+}
+
+function saveListStorage(list){
+    var jsonString = JSON.stringify(list);
+    localStorage.setItem("Lista de Compras",jsonString);
+}
+
+function initListStorage(){
+    var testList = localStorage.getItem("Lista de Compras");
+    if (testList){
+        list = JSON.parse(testList);
+    }
+    setList(list);
+}
+
+
+initListStorage(list);
